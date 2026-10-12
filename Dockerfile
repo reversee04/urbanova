@@ -31,9 +31,9 @@ WORKDIR /var/www/html
 # Copy project files
 COPY . .
 
-# Configure Apache DocumentRoot to point to Laravel's /public folder
+# Configure Apache DocumentRoot to point to Laravel's /public folder (using correct file name: 000-default.conf)
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/0000-default.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
 # Install PHP & Node dependencies, build Vite/React assets
