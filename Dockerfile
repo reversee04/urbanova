@@ -1,5 +1,5 @@
-# Use an official PHP 8.2 image with Apache
-FROM php:8.2-apache
+# Use an official PHP 8.4 image with Apache
+FROM php:8.4-apache
 
 # Install system dependencies and Node.js (v20)
 RUN apt-get update && apt-get install -y \
@@ -31,7 +31,7 @@ WORKDIR /var/www/html
 # Copy project files
 COPY . .
 
-# Configure Apache DocumentRoot to point to Laravel's /public folder (using correct file name: 000-default.conf)
+# Configure Apache DocumentRoot to point to Laravel's /public folder
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
