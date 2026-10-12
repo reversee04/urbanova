@@ -46,6 +46,8 @@ RUN mkdir -p /var/www/html/database \
 RUN composer install --no-dev --optimize-autoloader
 RUN npm install
 RUN npm run build
+# Run migrations during build for SQLite
+RUN php artisan migrate --force
 
 # Fix permissions for Laravel storage and cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
