@@ -1,7 +1,5 @@
-# Use an official PHP 8.4 image with Apache
 FROM php:8.4-apache
 
-# Install system dependencies and Node.js (v20)
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -13,47 +11,36 @@ RUN apt-get update && apt-get install -y \
     && curl -sL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs
 
-# Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt-get/lists/*
 
-# Install PHP extensions required by Laravel
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+RUN docker-php-ext-install pdo_mysql pdo_sqlite mbstring exif pcntl bcmath gd
 
-# Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
 WORKDIR /var/www/html
 
-# Copy project files
 COPY . .
 
-# Configure Apache DocumentRoot to point to Laravel's /public folder
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/000-default.conf
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
-# Create SQLite database file and set permissions
 RUN mkdir -p /var/www/html/database \
     && touch /var/www/html/database/database.sqlite \
     && chown -R www-data:www-data /var/www/html/database \
     && chmod -R 775 /var/www/html/database
 
-# Install PHP & Node dependencies, build Vite/React assets
 RUN composer install --no-dev --optimize-autoloader
 RUN npm install
 RUN npm run build
-# Run migrations during build for SQLite
+
 RUN php artisan migrate --force
 
-# Fix permissions for Laravel storage and cache
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Expose port
 EXPOSE 80
 
-# Start Apache in the foreground
 CMD ["apache2-foreground"]
