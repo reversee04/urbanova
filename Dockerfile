@@ -6,6 +6,8 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
+    libsqlite3-dev \
+    pkg-config \
     zip \
     unzip \
     && curl -sL https://deb.nodesource.com/setup_20.x | bash - \
