@@ -35,6 +35,7 @@ RUN mkdir -p /var/www/html/database \
     && chmod -R 775 /var/www/html/database
 
 RUN composer install --no-dev --optimize-autoloader
+RUN php artisan package:discover --ansi
 RUN npm install
 RUN npm run build
 
