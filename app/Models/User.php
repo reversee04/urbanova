@@ -4,7 +4,6 @@ namespace App\Models;
 
 use App\Concerns\HasTeams;
 use Database\Factories\UserFactory;
-// Email verification disabled
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Collection;
@@ -21,7 +20,6 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property string $name
  * @property string $username
  * @property string $email
- * @property Carbon|null $email_verified_at
  * @property string $password
  * @property string|null $two_factor_secret
  * @property string|null $two_factor_recovery_codes
@@ -50,7 +48,6 @@ class User extends Authenticatable implements PasskeyUser
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
             'password' => 'hashed',
             /* @chisel-2fa */
             'two_factor_confirmed_at' => 'datetime',
