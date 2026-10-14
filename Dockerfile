@@ -36,10 +36,12 @@ RUN mkdir -p /var/www/html/database \
 
 RUN composer install --no-dev --optimize-autoloader
 RUN php artisan package:discover --ansi
+
+RUN php artisan migrate --force --seed
+
 RUN npm install
 RUN npm run build
 
-RUN php artisan migrate --force --seed
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache /var/www/html/database \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
