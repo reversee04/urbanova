@@ -1,60 +1,21 @@
 import React from 'react';
+import { usePage } from '@inertiajs/react';
 
 interface Article {
-  id: string;
+  id: number;
   title: string;
-  date: string;
+  year: string;
   category: string;
   image: string;
   url?: string;
 }
 
-const articles: Article[] = [
-  {
-    id: '1',
-    title: 'Climate-resilient land use and flood zoning work under UNEP funding in Malawi',
-    date: 'Ongoing 2025',
-    category: 'Projects',
-    image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1000&auto=format&fit=crop',
-  },
-  {
-    id: '2',
-    title: 'Environmental and social assessment for Caála Logistics Platform Feasibility Study in Angola',
-    date: '2025',
-    category: 'Projects',
-    image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1000&auto=format&fit=crop',
-  },
-  {
-    id: '3',
-    title: 'Environmental and social safeguards for Salima - Lilongwe Water Project',
-    date: '2024',
-    category: 'Projects',
-    image: 'https://images.unsplash.com/photo-1548839140-29a749e1cf4e?q=80&w=1000&auto=format&fit=crop',
-  },
-  {
-    id: '4',
-    title: 'Resettlement Action Plan leadership for Shire Valley Transformation Programme',
-    date: '2024',
-    category: 'Projects',
-    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1000&auto=format&fit=crop',
-  },
-  {
-    id: '5',
-    title: 'Fuel retail & energy regulatory compliance support for Brighto Filling Station MEPA clearance',
-    date: '2025',
-    category: 'Energy',
-    image: 'https://images.unsplash.com/photo-1527018601619-a508a2be00cd?q=80&w=1200&auto=format&fit=crop',
-  },
-  {
-    id: '6',
-    title: 'Resettlement, land acquisition, and social development for Nacala Corridor Railway Project',
-    date: '2023',
-    category: 'Projects',
-    image: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1000&auto=format&fit=crop',
-  },
-];
+interface PageProps { featured: Article[]; [key: string]: unknown }
 
 export const LatestNewsGrid: React.FC = () => {
+  const { featured = [] } = usePage<PageProps>().props;
+  const articles = featured;
+  if (articles.length === 0) return null;
   return (
     <section className="w-full bg-slate-50 text-slate-900 py-16 px-6 lg:px-12 font-sans">
       <div className="max-w-7xl mx-auto">
@@ -70,33 +31,9 @@ export const LatestNewsGrid: React.FC = () => {
         {/* Masonry / Custom Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           
-          {/* Column 1 */}
-          <div className="space-y-6 flex flex-col">
-            {/* Top Card - EAD Malawi */}
-            <ArticleCard article={articles[0]} className="h-72" />
-            
-            {/* Bottom Card - Shire Valley */}
-            <ArticleCard article={articles[3]} className="h-72" />
-          </div>
-
-          {/* Column 2 */}
-          <div className="space-y-6 flex flex-col">
-            {/* Tall Middle Card - Angola Logistics */}
-            <ArticleCard article={articles[1]} className="h-[430px]" />
-            
-            {/* Wide Bottom Card - Brighto Energy */}
-            <ArticleCard article={articles[4]} className="h-44" />
-          </div>
-
-          {/* Column 3 */}
-          <div className="space-y-6 flex flex-col">
-            {/* Top Right Card - Salima Water */}
-            <ArticleCard article={articles[2]} className="h-60" />
-            
-            {/* Bottom Right Card - Nacala Railway */}
-            <ArticleCard article={articles[5]} className="h-[370px]" />
-          </div>
-
+          {articles.map((article, index) => (
+            <ArticleCard key={article.id} article={article} className={index % 3 === 1 ? 'h-[430px]' : 'h-72'} />
+          ))}
         </div>
       </div>
     </section>
@@ -153,7 +90,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, className = '' }) =>
             <line x1="8" y1="2" x2="8" y2="6" />
             <line x1="3" y1="10" x2="21" y2="10" />
           </svg>
-          <span>{article.date}</span>
+          <span>{article.year}</span>
         </div>
       </div>
     </a>

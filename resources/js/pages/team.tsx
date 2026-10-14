@@ -1,63 +1,12 @@
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import React from 'react';
 
+interface TeamMember { id: number; name: string; role: string; description: string; image: string }
+interface PageProps { members: TeamMember[]; [key: string]: unknown }
+
 export default function Team() {
-  const teamMembers = [
-    {
-      name: 'Hastings Jolotie Nyirenda',
-      role: 'Founder and Lead Consultant',
-      desc: 'Urban and regional planner, environmental and social safeguards specialist, resettlement specialist, and GIS practitioner with more than 15 years of professional experience[cite: 130].',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=800&auto=format&fit=crop',
-    },
-    {
-      name: 'Langson Hawonga',
-      role: 'Senior Environmental, Health and Safety Expert',
-      desc: 'Occupational Health and Safety and Environmental Health specialist with a Bachelor of Science in Environmental Health from the University of Malawi[cite: 132].',
-      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=800&auto=format&fit=crop',
-    },
-    {
-      name: 'Walusungu Chipeta',
-      role: 'Senior Social and Gender Safeguards Specialist',
-      desc: 'Specialist in stakeholder engagement, land acquisition, resettlement, grievance management, women’s economic empowerment, and GBV risk management[cite: 133].',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=800&auto=format&fit=crop',
-    },
-    {
-      name: 'Albert Rozario',
-      role: 'Senior Resettlement & Social Safeguards Specialist',
-      desc: 'Specialist in land acquisition, RAP preparation and implementation, livelihood restoration, grievance redress, and construction-related safeguards compliance[cite: 134].',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=800&auto=format&fit=crop',
-    },
-    {
-      name: 'William Rozario',
-      role: 'Social Development, Gender, & Field Safeguards Specialist',
-      desc: 'Social Development Practitioner with extensive experience in RAP implementation, ESIA support, and stakeholder engagement on major infrastructure projects[cite: 134, 135].',
-      image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=800&auto=format&fit=crop',
-    },
-    {
-      name: 'Aisha Balakasi',
-      role: 'Civil Engineer and Infrastructure Specialist',
-      desc: 'Civil Engineer with over seven years of experience in infrastructure planning, design review, construction supervision, contract management, and FIDIC contracts[cite: 135].',
-      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=800&auto=format&fit=crop',
-    },
-    {
-      name: 'Dr Geoffrey Chiyuzga Singini',
-      role: 'Senior M&E, Statistics and Data Systems Specialist',
-      desc: 'Statistician and biostatistician with 19 years of experience in study design, M&E systems, statistical modeling, data quality assurance, and predictive analytics[cite: 136].',
-      image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&auto=format&fit=crop',
-    },
-    {
-      name: 'Cynthia Anna Phiri',
-      role: 'GIS Specialist and Land Surveyor',
-      desc: 'GIS Specialist and Land Surveyor holding a BSc in Land Surveying and a Certificate in Drone Technology from the African Drone and Data Academy[cite: 137].',
-      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop',
-    },
-    {
-      name: 'Thomas Magaisa',
-      role: 'Senior Agriculture, Livelihoods & Natural Resources Specialist',
-      desc: 'Agriculture, natural resources, climate resilience, WASH, and livelihoods specialist with over 20 years of experience[cite: 138].',
-      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=800&auto=format&fit=crop',
-    },
-  ];
+  const { members = [] } = usePage<PageProps>().props;
+
 
   return (
     <>
@@ -101,9 +50,9 @@ export default function Team() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {teamMembers.map((member) => (
+            {members.map((member) => (
               <div
-                key={member.name}
+                key={member.id}
                 className="flex flex-col overflow-hidden rounded-sm bg-[#0b2834] text-white shadow-xs group hover:bg-[#0f3444] transition-colors"
               >
                 {/* Top Member Image */}
@@ -124,7 +73,7 @@ export default function Team() {
                     {member.role}
                   </p>
                   <p className="text-xs text-slate-300 leading-relaxed mt-auto">
-                    {member.desc}
+                    {member.description}
                   </p>
                 </div>
               </div>

@@ -1,122 +1,23 @@
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import React, { useState } from 'react';
 
 interface Project {
-  id: string;
+  id: number;
   title: string;
   client: string;
   location: string;
   year: string;
   category: string;
-  scopeSummary: string;
+  scope_summary: string;
   achievements: string[];
   image: string;
 }
 
+interface PageProps { projects: Project[]; categories: string[]; [key: string]: unknown }
+
 export default function Projects() {
+  const { projects = [], categories = ['All'] } = usePage<PageProps>().props;
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
-
-  const projects: Project[] = [
-    {
-      id: 'unep-flood-zoning',
-      title: 'Climate-Resilient Land Use and Flood Zoning',
-      client: 'Environmental Affairs Department (EAD) / UNEP',
-      location: 'Malawi',
-      year: '2025 – Ongoing',
-      category: 'Climate & Planning',
-      scopeSummary:
-        "Supporting climate-resilient land use and flood zoning work under UNEP funding, including zoning, flood and parcel data analysis, and climate adaptation indicators[cite: 67].",
-      achievements: [
-        'Zoning, flood, and parcel data analysis for climate adaptation[cite: 67]',
-        'Relocation capacity estimates and land use planning policy support[cite: 67]',
-      ],
-      image: 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1200&auto=format&fit=crop',
-    },
-    {
-      id: 'angola-caala-logistics',
-      title: 'Caála Logistics Platform Feasibility Study',
-      client: 'Regional Logistics Development Partners',
-      location: 'Caála, Angola',
-      year: '2025',
-      category: 'Logistics & Infrastructure',
-      scopeSummary:
-        "Serving as ESIA Lead and Resettlement Specialist for the Caála Logistics Platform Project, ensuring alignment with World Bank Environmental and Social Standards[cite: 67].",
-      achievements: [
-        'Comprehensive environmental and social impact assessment[cite: 67]',
-        'Stakeholder consultations and livelihood restoration planning[cite: 67]',
-      ],
-      image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=1200&auto=format&fit=crop',
-    },
-    {
-      id: 'salima-lilongwe-water',
-      title: 'Salima - Lilongwe Water Project',
-      client: 'Lilongwe Water Board',
-      location: 'Salima to Lilongwe, Malawi',
-      year: 'Pre-feasibility Stage',
-      category: 'Water & Utilities',
-      scopeSummary:
-        "Contributing to the pre-feasibility stage focusing on environmental and social analysis, community development planning, and European Investment Bank safeguards review[cite: 68].",
-      achievements: [
-        'Environmental and social analysis for bulk water infrastructure[cite: 68]',
-        'Community development planning and EIB safeguards review[cite: 68]',
-      ],
-      image: 'https://images.unsplash.com/photo-1548839140-29a749e1cf4e?q=80&w=1200&auto=format&fit=crop',
-    },
-    {
-      id: 'shire-valley-transformation',
-      title: 'Shire Valley Transformation Programme',
-      client: 'Ministry of Agriculture / Irrigation Development',
-      location: 'Lower Shire Valley, Malawi',
-      year: 'Major Irrigation Assignment',
-      category: 'Agriculture & Resettlement',
-      scopeSummary:
-        "Serving as RAP Consultant and RAP Team Leader for major irrigation canal assignments under World Bank and AfDB safeguard requirements[cite: 68].",
-      achievements: [
-        'Execution of census, socio-economic surveys, and asset inventories[cite: 68]',
-        'Entitlement planning, grievance redress, and livelihood restoration[cite: 68]',
-      ],
-      image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop',
-    },
-    {
-      id: 'brighto-energy-mepa',
-      title: 'Fuel Retail and Energy Compliance',
-      client: 'Brighto Filling Station',
-      location: 'Malawi',
-      year: 'Completed',
-      category: 'Energy & Compliance',
-      scopeSummary:
-        "Providing environmental and social safeguards services, regulatory compliance support, and project advisory leading to MEPA clearance[cite: 81].",
-      achievements: [
-        'Successful acquisition of statutory MEPA environmental clearance[cite: 81]',
-        'Efficient navigation of complex regulatory approval processes[cite: 81]',
-      ],
-      image: 'https://images.unsplash.com/photo-1527018601619-a508a2be00cd?q=80&w=1200&auto=format&fit=crop',
-    },
-    {
-      id: 'nacala-railway-corridor',
-      title: 'Nacala Corridor Railway Project',
-      client: 'Regional Rail Authorities',
-      location: 'Malawi – Mozambique Corridor',
-      year: 'Infrastructure Assignment',
-      category: 'Logistics & Infrastructure',
-      scopeSummary:
-        "Supporting land acquisition, resettlement, stakeholder engagement, and social development coordination linked to railway rehabilitation[cite: 68].",
-      achievements: [
-        'Resettlement and land acquisition execution[cite: 68]',
-        'Social investment coordination and community engagement[cite: 68]',
-      ],
-      image: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop',
-    },
-  ];
-
-  const categories = [
-    'All',
-    'Climate & Planning',
-    'Logistics & Infrastructure',
-    'Water & Utilities',
-    'Agriculture & Resettlement',
-    'Energy & Compliance',
-  ];
 
   const filteredProjects =
     selectedCategory === 'All'
@@ -210,7 +111,7 @@ export default function Projects() {
                     </p>
 
                     <p className="text-xs text-slate-300 leading-relaxed mb-4">
-                      {project.scopeSummary}
+                      {project.scope_summary}
                     </p>
                   </div>
 
