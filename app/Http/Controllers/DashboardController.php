@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HeroSlide;
+use App\Models\Project;
 use App\Models\TeamInvitation;
+use App\Models\TeamMember;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -33,6 +36,14 @@ class DashboardController extends Controller
 
         return Inertia::render('dashboard', [
             'pendingInvitations' => $pendingInvitations,
+            'stats' => [
+                'heroSlides'  => HeroSlide::count(),
+                'projects'    => Project::count(),
+                'teamMembers' => TeamMember::count(),
+                'activeSlides'   => HeroSlide::where('is_active', true)->count(),
+                'activeProjects' => Project::where('is_active', true)->count(),
+            ],
+            'recentProjects' => Project::orderByDesc('created_at')->limit(5)->get(['id','title','client','category','is_active']),
         ]);
     }
 }

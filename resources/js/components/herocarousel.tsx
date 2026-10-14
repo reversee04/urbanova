@@ -1,48 +1,19 @@
 import React, { useState, useEffect } from 'react';
+import { usePage } from '@inertiajs/react';
 
 interface Slide {
   id: number;
   title: string;
   description: string;
-  ctaText: string;
-  ctaUrl: string;
-  bgImage: string;
+  cta_text: string;
+  cta_url: string;
+  bg_image: string;
 }
 
-const slides: Slide[] = [
-  {
-    id: 1,
-    title: 'Trusted globally to deliver innovative, sustainable solutions',
-    description:
-      'Provider of consultancy, technical services, accreditation schemes, research, innovation and training to customers in the water, waste and environment sectors around the globe.',
-    ctaText: 'Explore what we do',
-    ctaUrl: '/services',
-    bgImage:
-      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2000&auto=format&fit=crop',
-  },
-  {
-    id: 2,
-    title: 'Pioneering clean energy and environmental stewardship',
-    description:
-      'Empowering communities and businesses with cutting-edge ecological strategy, sustainability frameworks, and resource management solutions.',
-    ctaText: 'Discover our projects',
-    ctaUrl: '/projects',
-    bgImage:
-      'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=2000&auto=format&fit=crop',
-  },
-  {
-    id: 3,
-    title: 'Building resilient water & waste infrastructure',
-    description:
-      'Transforming global systems through research-backed engineering, policy advisory, and technological innovations for future generations.',
-    ctaText: 'Learn about our impact',
-    ctaUrl: '/projects',
-    bgImage:
-      'https://images.unsplash.com/photo-1426604966848-d7adac402bff?q=80&w=2000&auto=format&fit=crop',
-  },
-];
+interface PageProps { slides: Slide[]; [key: string]: unknown }
 
 export const HeroCarousel: React.FC = () => {
+  const { slides = [] } = usePage<PageProps>().props;
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const prevSlide = () => {
@@ -55,11 +26,14 @@ export const HeroCarousel: React.FC = () => {
 
   // Autoplay functionality every 6 seconds
   useEffect(() => {
+    if (slides.length < 2) return;
     const timer = setInterval(() => {
       nextSlide();
     }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
+
+  if (slides.length === 0) return null;
 
   const slide = slides[currentSlide];
 
@@ -68,7 +42,7 @@ export const HeroCarousel: React.FC = () => {
       {/* Background Image Container */}
       <div className="absolute inset-0 transition-opacity duration-1000 ease-in-out">
         <img
-          src={slide.bgImage}
+          src={slide.bg_image}
           alt={slide.title}
           className="w-full h-full object-cover object-center"
         />
@@ -114,10 +88,10 @@ export const HeroCarousel: React.FC = () => {
           {/* CTA Button */}
           <div className="pt-2">
             <a
-              href={slide.ctaUrl}
+              href={slide.cta_url}
               className="inline-block bg-[#51b2b8] hover:bg-[#3ea0a6] text-[#0c2a38] font-semibold px-7 py-3.5 rounded-sm transition-all duration-200 shadow-md hover:shadow-lg active:scale-95"
             >
-              {slide.ctaText}
+              {slide.cta_text}
             </a>
           </div>
         </div>
