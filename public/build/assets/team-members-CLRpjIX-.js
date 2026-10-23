@@ -1,0 +1,1 @@
+import{t as e}from"./cms-resource-page-CJwvs_Bu.js";var t=e;export{t as default};
